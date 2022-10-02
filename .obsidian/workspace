@@ -122,6 +122,7 @@
   },
   "active": "bce23a794ffd1091",
   "lastOpenFiles": [
+    "document/udemy/webpack4.md",
     "document/settings/git/using-multiple-github-accounts-with-ssh-keys.md",
     "document/settings/config/wsl.json.md",
     "document/settings/config/replit.it.md",
@@ -130,7 +131,6 @@
     "README.md",
     "template/Task list.md",
     "document/diary/test.md",
-    "document/diary/mindmap test.md",
-    "document/diary/Kanban test.md"
+    "document/diary/mindmap test.md"
   ]
 }
