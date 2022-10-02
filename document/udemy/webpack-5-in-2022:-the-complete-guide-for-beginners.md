@@ -68,7 +68,7 @@
   - [1. Configuring ESLint](#1-configuring-eslint)
 - [14. Summary](#14-summary)
   - [1. Summary](#1-summary)
-  - [2. Bonus Lecture.html](#2-bonus-lecturehtml)
+  - [2. Bonus Lecture.html`](#2-bonus-lecturehtml)
 
 https://www.udemy.com/course/webpack-from-beginner-to-advanced/
 
@@ -1862,4 +1862,4 @@ package.json
 
 ### 1. Summary
 
-### 2. Bonus Lecture.html
+### 2. Bonus Lecture.html`
