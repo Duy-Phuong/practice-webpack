@@ -1,5 +1,5 @@
 
-
+- [Resources](#resources)
 - [1. Introduction](#1-introduction)
   - [1. Introduction](#1-introduction-1)
   - [2. What you need for this course](#2-what-you-need-for-this-course)
@@ -7,9 +7,16 @@
   - [1. Why Do We Need Webpack](#1-why-do-we-need-webpack)
   - [2. Setting Up Our Application](#2-setting-up-our-application)
   - [3. Install Webpack And Integrate It With NPM](#3-install-webpack-and-integrate-it-with-npm)
+  - [Custom webpack configuration](#custom-webpack-configuration)
   - [4. Small Note about Github Repository.html](#4-small-note-about-github-repositoryhtml)
   - [4.1 Github Repository.html](#41-github-repositoryhtml)
   - [5. Integrating Webpack Into Our JS Application](#5-integrating-webpack-into-our-js-application)
+- [Asset modules](#asset-modules)
+  - [Handle images](#handle-images)
+  - [publicPath](#publicpath)
+  - [Asset/inline Module Type](#assetinline-module-type)
+  - [General Asset Type](#general-asset-type)
+  - [Asset/source Module Type](#assetsource-module-type)
 - [3. Loaders](#3-loaders)
   - [1. What Is Webpack Loader](#1-what-is-webpack-loader)
   - [2. Handling Images With Webpack](#2-handling-images-with-webpack)
@@ -68,14 +75,26 @@
   - [1. Configuring ESLint](#1-configuring-eslint)
 - [14. Summary](#14-summary)
   - [1. Summary](#1-summary)
-  - [2. Bonus Lecture.html`](#2-bonus-lecturehtml)
+  - [2. Bonus Lecture.html](#2-bonus-lecturehtml)
+
+
+## Resources
+
 
 https://www.udemy.com/course/webpack-from-beginner-to-advanced/
 
+https://github.com/vp-online-courses/webpack-tutorial
+
+
 ![image-20200418213853538](./assets/image-20200418213853538.png)
 
+
+```
 C:\Users\phuong\AppData\Local\Programs\Python\Python37\python.exe D:/Source/Source_All/python/Test/readfile.py
-======== name dir ========
+```
+
+
+
 ## 1. Introduction
 ### 1. Introduction
 ### 2. What you need for this course
@@ -120,12 +139,23 @@ function hello() {
 
 
 ### 3. Install Webpack And Integrate It With NPM
+https://github.com/vp-online-courses/webpack-tutorial/tree/5-install-webpack-end
+
 
 ```shell
 npm init -y
 
 npm install --save-dev webpack webpack-cli
 ```
+
+### Custom webpack configuration
+Can Preview
+
+https://github.com/vp-online-courses/webpack-tutorial/blob/8-custom-webpack-configuration-end/webpack.config.js
+
+Add new file to Custom webpack configuration
+![](assets/Pasted%20image%2020221002221749.png)
+![](assets/Pasted%20image%2020221002221804.png)
 
 **project**
 
@@ -152,6 +182,8 @@ module.exports = {
   },
 };
 ```
+
+![](assets/Pasted%20image%2020221002221847.png)
 
 package.json
 
@@ -185,6 +217,7 @@ https://github.com/vp-online-courses/webpack-tutorial
 I fixed the problem by adding the meta tag `` to my index.html and rebuilding.
 
 ### 5. Integrating Webpack Into Our JS Application
+Can preview
 
 hello-world.js
 
@@ -205,6 +238,9 @@ import hello from "./hello-world";
 hello();
 
 ```
+
+![](assets/Pasted%20image%2020221002221238.png)
+![](assets/Pasted%20image%2020221002221422.png)
 
 index.html
 
@@ -227,6 +263,208 @@ index.html
 `npm run build`
 
 NOTE: lưu ý đến thứ tự đặt thẻ script
+
+## Asset modules
+Preview
+![](assets/Pasted%20image%2020221002222404.png)
+Resources: large files
+inline: small file like svg
+asset: general files
+source: bundle
+
+### Handle images
+https://github.com/vp-online-courses/webpack-tutorial/tree/10-handling-images-with-webpack-end
+
+add-image.js 
+```js
+import Kiwi from './kiwi.jpg';
+
+function addImage() {
+    const img = document.createElement('img');
+    img.alt = 'Kiwi';
+    img.width = 300;
+    img.src = Kiwi;
+    const body = document.querySelector('body');
+    body.appendChild(img);
+}
+
+export default addImage;
+```
+
+index.js
+```js
+import helloWorld from './hello-world.js';
+import addImage from './add-image.js';
+
+helloWorld();
+addImage();
+```
+
+webpack.config.json
+```js
+const path = require('path');
+
+module.exports = {
+    entry: './src/index.js',
+    output: {
+        filename: 'bundle.js',
+        path: path.resolve(__dirname, './dist')
+    },
+    mode: 'none',
+    module: {
+        rules: [
+            {
+                test: /\.(png|jpg)$/,
+                type: 'asset/resource'
+            }
+        ]
+    }
+};
+
+```
+
+Another example
+
+![](assets/Pasted%20image%2020221002223219.png)
+delete the 1st rule
+npm run build
+
+![](assets/Pasted%20image%2020221002223331.png)
+
+### publicPath
+The [`publicPath`](https://webpack.js.org/configuration/output/#outputpublicpath) configuration option can be quite useful in a variety of scenarios. It allows you to specify the base path for all the assets within your application.
+
+
+https://github.com/vp-online-courses/webpack-tutorial/compare/11-public-path-begin...11-public-path-end
+
+```js
+    entry: './src/index.js',
+    output: {
+        filename: 'bundle.js',
+        path: path.resolve(__dirname, './dist'),
+        publicPath: 'dist/'
+    },
+    mode: 'none',
+    module: {
+```
+
+Open live server
+http://127.0.0.1:5500/dist/
+Now u can see the image
+![](assets/Pasted%20image%2020221002224238.png)
+
+
+### Asset/inline Module Type
+
+```javascript
+const path = require('path');
+
+module.exports = {
+    entry: './src/index.js',
+    output: {
+        filename: 'bundle.js',
+        path: path.resolve(__dirname, './dist'),
+        publicPath: 'dist/'
+    },
+    mode: 'none',
+    module: {
+        rules: [
+            {
+                test: /\.(png|jpg)$/,
+                type: 'asset/inline'
+            }
+        ]
+    }
+};
+
+```
+
+### General Asset Type
+
+```javascript
+const path = require('path');
+
+module.exports = {
+    entry: './src/index.js',
+    output: {
+        filename: 'bundle.js',
+        path: path.resolve(__dirname, './dist'),
+        publicPath: 'dist/'
+    },
+    mode: 'none',
+    module: {
+        rules: [
+            {
+                test: /\.(png|jpg)$/,
+                type: 'asset',
+                parser: {
+                    dataUrlCondition: {
+                        maxSize: 3 * 1024
+                    }
+                }
+            }
+        ]
+    }
+};
+
+
+```
+
+### Asset/source Module Type
+
+Add altText.txt
+
+```javascript
+import Kiwi from './kiwi.jpg';
+import altText from './altText.txt';
+
+function addImage() {
+    // Inside this function I will create an img dom element, specify an alt , width , and src properties.
+    const img = document.createElement('img');
+    img.alt = altText;
+    img.width = 300;
+    img.src = Kiwi;
+    const body = document.querySelector('body');
+    body.appendChild(img);
+}
+
+export default addImage;
+```
+
+webpack
+
+```javascript
+const path = require('path');
+
+module.exports = {
+    entry: './src/index.js',
+    output: {
+        filename: 'bundle.js',
+        path: path.resolve(__dirname, './dist'),
+        publicPath: 'dist/'
+    },
+    mode: 'none',
+    module: {
+        rules: [
+            {
+                test: /\.(png|jpg)$/,
+                type: 'asset',
+                parser: {
+                    dataUrlCondition: {
+                        maxSize: 3 * 1024
+                    }
+                }
+            },
+            {
+                test: /\.txt/,
+                type: 'asset/source'
+            }
+        ]
+    }
+};
+
+```
+
 
 ## 3. Loaders
 ### 1. What Is Webpack Loader
@@ -594,8 +832,6 @@ index.html add link tag
 </html>
 
 ```
-
-
 
 
 
@@ -1332,6 +1568,8 @@ prodcution
     }),
 ```
 
+
+```
 It is called optimization.
 It is an object and inside it we can specify another option which is called splitChunks.
 And inside we need to specify yet another option which is called chunks, and here specify the value "all".
@@ -1354,6 +1592,8 @@ And the second chunk would be this common chunk, common bundle, which includes l
 
 Which is called
 vendors~hello-world~kiwi.
+```
+
 
 ### 6. Setting Custom Options for Code Splitting
 
@@ -1862,4 +2102,6 @@ package.json
 
 ### 1. Summary
 
-### 2. Bonus Lecture.html`
+### 2. Bonus Lecture.html
+
+
